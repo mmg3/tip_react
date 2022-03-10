@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  NavLink,
-  Link,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import { Route } from "react-router";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -89,9 +84,21 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = React.useState(true);
+  const [fila, setFila] = React.useState([]);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const [title, setTitle] = React.useState("");
+
+  const clickHandler = (name) => {
+    setTitle(name);
+  };
+
+  if (fila == null) {
+    setFila("");
+  }
+
+  const props = { fila, setFila };
 
   return (
     <Router>
@@ -123,7 +130,7 @@ function DashboardContent() {
                 noWrap
                 sx={{ flexGrow: 1 }}
               >
-                Dashboard
+                {title || "Select a menu option"}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -147,7 +154,7 @@ function DashboardContent() {
               </ListSubheader>
               <Divider sx={{ my: 1 }} />
               <Link to="/enterprises">
-                <ListItemButton>
+                <ListItemButton onClick={() => clickHandler("Enterprises")}>
                   <ListItemIcon>
                     <DashboardIcon />
                   </ListItemIcon>
@@ -155,7 +162,7 @@ function DashboardContent() {
                 </ListItemButton>
               </Link>
               <Link to={"/departments"}>
-                <ListItemButton>
+                <ListItemButton onClick={() => clickHandler("Departments")}>
                   <ListItemIcon>
                     <ShoppingCartIcon />
                   </ListItemIcon>
@@ -163,7 +170,7 @@ function DashboardContent() {
                 </ListItemButton>
               </Link>
               <Link to="/employees">
-                <ListItemButton>
+                <ListItemButton onClick={() => clickHandler("Employees")}>
                   <ListItemIcon>
                     <PeopleIcon />
                   </ListItemIcon>
@@ -171,7 +178,9 @@ function DashboardContent() {
                 </ListItemButton>
               </Link>
               <Link to="/depemps">
-                <ListItemButton>
+                <ListItemButton
+                  onClick={() => clickHandler("Departments  & Employees")}
+                >
                   <ListItemIcon>
                     <BarChartIcon />
                   </ListItemIcon>
@@ -207,19 +216,16 @@ function DashboardContent() {
                   >
                     <Switch>
                       <Route path="/enterprises">
-                        <Enterprises />
+                        <Enterprises {...props} />
                       </Route>
                       <Route path="/departments">
-                        <Departments />
+                        <Departments {...props} />
                       </Route>
                       <Route path="/employees">
-                        <Employees />
+                        <Employees {...props} />
                       </Route>
                       <Route path="/depemps">
-                        <Depemps />
-                      </Route>
-                      <Route exact path="/">
-                        <Enterprises />
+                        <Depemps {...props} />
                       </Route>
                     </Switch>
                   </Paper>
@@ -236,19 +242,16 @@ function DashboardContent() {
                   >
                     <Switch>
                       <Route path="/enterprises">
-                        <ListEnterprises />
+                        <ListEnterprises {...props} />
                       </Route>
                       <Route path="/departments">
-                        <ListDepartments />
+                        <ListDepartments {...props} />
                       </Route>
                       <Route path="/employees">
-                        <ListEmployees />
+                        <ListEmployees {...props} />
                       </Route>
                       <Route path="/depemps">
-                        <ListDepemps />
-                      </Route>
-                      <Route exact path="/">
-                        <ListEnterprises />
+                        <ListDepemps {...props} />
                       </Route>
                     </Switch>
                   </Paper>
